@@ -41,11 +41,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ activeView, onToggleView }) =
         />
       )}
 
-      {/* MAIN CARD - Flat Design */}
-      <div className="relative w-full max-w-[900px] h-[550px] flex flex-col md:flex-row bg-[#0a0a0a] border border-white/10 shadow-2xl rounded-sm overflow-hidden z-10">
+      {/* MAIN CARD - Strictly Fixed Dimensions on Desktop to prevent resizing */}
+      <div className="relative w-full max-w-[900px] h-[550px] flex flex-col md:flex-row bg-[#0a0a0a] border border-white/10 shadow-2xl rounded-sm overflow-hidden z-10 transition-all duration-300">
           
         {/* LEFT COLUMN: IDENTITY */}
-        <div className="w-full md:w-[260px] h-auto md:h-full border-b md:border-b-0 md:border-r border-white/5 bg-black/40 p-6 flex flex-col items-center relative">
+        <div className="w-full md:w-[260px] h-auto md:h-full border-b md:border-b-0 md:border-r border-white/5 bg-black/40 p-6 flex flex-col items-center relative flex-shrink-0">
           
           {/* Header */}
           <div className="w-full flex justify-between items-center mb-6 md:mb-10">
@@ -82,11 +82,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ activeView, onToggleView }) =
           </div>
         </div>
 
-        {/* MIDDLE: CONTENT */}
-        <div className="flex-1 h-full relative bg-neutral-900/20">
+        {/* MIDDLE: CONTENT - Fixed Flex Basis, Scrollbar Always Visible to prevent jump */}
+        <div className="flex-1 h-full relative bg-neutral-900/20 min-w-0">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 pointer-events-none"></div>
           
-          <div className="h-full p-8 relative z-10 overflow-y-auto custom-scroll">
+          {/* overflow-y-scroll forces scrollbar track to exist, preventing layout width jumps */}
+          <div className="h-full p-8 relative z-10 overflow-y-scroll custom-scroll">
               {activeView ? (
                 <SideHUD activeView={activeView} onClose={() => handleToggle(null)} />
               ) : (
@@ -116,19 +117,21 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ activeView, onToggleView }) =
           </div>
         </div>
 
-        {/* RIGHT COLUMN: NAVIGATION */}
-        <div className="w-full md:w-[200px] h-auto md:h-full bg-black/20 border-t md:border-t-0 md:border-l border-white/5 flex flex-row md:flex-col p-4 gap-3 overflow-x-auto md:overflow-visible">
-            {menuItems.map((item) => (
-              <CylinderButton 
-                key={item.id}
-                index={item.id}
-                label={item.label}
-                icon={item.icon}
-                isActive={activeView === item.view}
-                onClick={() => handleToggle(item.view)}
-                rotationY={0}
-              />
-            ))}
+        {/* RIGHT COLUMN: NAVIGATION - Fixed Width on Desktop, Grid on Mobile */}
+        <div className="w-full md:w-[200px] h-auto md:h-full bg-black/20 border-t md:border-t-0 md:border-l border-white/5 flex-shrink-0">
+           <div className="grid grid-cols-4 md:flex md:flex-col h-full w-full p-1 md:p-4 gap-1 md:gap-3">
+              {menuItems.map((item) => (
+                <CylinderButton 
+                  key={item.id}
+                  index={item.id}
+                  label={item.label}
+                  icon={item.icon}
+                  isActive={activeView === item.view}
+                  onClick={() => handleToggle(item.view)}
+                  rotationY={0}
+                />
+              ))}
+           </div>
         </div>
 
       </div>
