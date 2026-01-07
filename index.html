@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyros | Tactical HUD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Roboto+Condensed:wght@300;400;700;900&display=swap');
+        
+        :root {
+            --accent: #ff0000;
+            --bg: #030405;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background-color: var(--bg);
+            overflow: hidden;
+            cursor: none;
+            color: #d1d5db;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .stencil { font-family: 'Orbitron', sans-serif; letter-spacing: 0.15em; }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-1%, -1%); }
+            30% { transform: translate(1%, 1%); }
+            50% { transform: translate(-1%, 1%); }
+            70% { transform: translate(1%, -1%); }
+        }
+
+        .grain-overlay {
+            position: fixed;
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 999;
+            animation: grain 1s steps(4) infinite;
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.2) 50%);
+            background-size: 100% 4px;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .perspective-1000 {
+            perspective: 1200px;
+        }
+
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+
+        .glitch-hover:hover {
+            text-shadow: 2px 0 #ff0000, -2px 0 #00ffff;
+            animation: glitch-anim 0.2s infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #ff0000; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+    <div class="grain-overlay"></div>
+    <div class="scanline"></div>
+</body>
+</html>
